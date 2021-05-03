@@ -13,11 +13,12 @@
         <div class="logo">
             <a href="#"><img src="images/logo.png" alt="logo" width="150"></a>
         </div>
+        <div class="btn-nav">☰</div>
         <nav>
             <ul>
-                <li><a href="#featured">Featured</a></li>
-                <li><a href="#/upcoming">Monthly's Picks</a></li>
-                <li><a href="#/like">Contact & Support</a></li>
+                <li><a href="#featured" onclick="toggleNav()">Featured</a></li>
+                <li><a href="#monthly" onclick="toggleNav()">Monthly's Picks</a></li>
+                <li><a href="#upcoming" onclick="toggleNav()">Upcoming Soon</a></li>
             </ul>
         </nav>
     </header>
@@ -28,8 +29,8 @@
     </div>
 
     <main>
-        <div class="featured">
-            <h1 id="featured">Featured This Week</h1>
+        <div class="featured" id="featured">
+            <h1>Featured This Week</h1>
             <div class="content">
                 <a href="">
                     <div class="card">
@@ -82,7 +83,7 @@
             </div>
         </div>
         
-        <div class="monthly">
+        <div class="monthly" id="monthly">
             <h1>Monthly's Picks</h1>
             <div class="content">
                 <a href="">
@@ -136,7 +137,7 @@
             </div>
         </div>
         
-        <div class="upcoming">
+        <div class="upcoming" id="upcoming">
             <h1>Upcoming Soon</h1>
             <div class="content">
                 <a href="">
@@ -210,6 +211,7 @@
                 }).done(function(data) {
                     let i = 0;
                     element.each(function() {
+                        $(this).attr('href',`detail.html?id=${data.results[i].id}`);
                         $(this).find("img").attr('src',`https://www.themoviedb.org/t/p/w220_and_h330_face${data.results[i].poster_path}`);
                         $(this).find(".title").text(data.results[i].original_title);
                         i++;
@@ -221,8 +223,16 @@
 
             getMovieDB(`https://api.themoviedb.org/3/movie/now_playing?api_key=${token}&language=en-US&page=1`, $(".featured .content a"));
             getMovieDB(`https://api.themoviedb.org/3/movie/popular?api_key=${token}&language=en-US&page=2`, $(".monthly .content a"));
-            getMovieDB(`https://api.themoviedb.org/3/movie/upcoming?api_key=${token}&language=en-US&page=3`, $(".upcoming .content a"));
+            getMovieDB(`https://api.themoviedb.org/3/movie/upcoming?api_key=${token}&language=en-US&page=2`, $(".upcoming .content a"));
+
+            $(".btn-nav").click(function() {
+                $(this).parent().find("nav").toggleClass("nav-mobile");
+            });
         })
+
+        function toggleNav() {
+            $("nav").toggleClass("nav-mobile");
+        }
     </script>
 </body>
 </html>
